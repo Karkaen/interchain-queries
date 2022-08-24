@@ -87,43 +87,41 @@ sudo systemctl restart icqd
 journalctl -u icqd -f -o cat
 ```
 
-You will have to wait some time until you see some logs (5-15min):
+You will have to wait some time until you see some logs (5-15min)
+
+## If you get "icq not found" error try this
+### These commands permanently delete all files of existing icq installation
+
 ```
-store/bank/key
-height parsed from GetHeightFromMetadata= 0
-Fetching client update for height height 176886
-store/bank/key
-height parsed from GetHeightFromMetadata= 0
-Fetching client update for height height 176886
-Requerying lightblock
-Requerying lightblock
-Requerying lightblock
-ICQ RELAYER | query.Height= 0
-ICQ RELAYER | res.Height= 176885
-Requerying lightblock
-ICQ RELAYER | query.Height= 0
-ICQ RELAYER | res.Height= 176885
-Send batch of 4 messages
-1 ClientUpdate message
-1 SubmitResponse message
-1 ClientUpdate message
-1 SubmitResponse message
-Sent batch of 2 (deduplicated) messages
+cd $HOME
+rm -rf interchain-queries
+rm -rf /usr/local/bin/icq
+rm -rf .icq
+rm -rf /etc/systemd/system/icqd.service
 ```
 
-After that you can check you transaction in the explorer
+## Install go
 
-![image](https://user-images.githubusercontent.com/50621007/183242421-ca5e8f83-4d54-4ddb-bdbc-31430da23046.png)
-
-# Usefull commands
-
-## Completely remove icq
-> NOTE: This will delete your icq from the machine!
 ```
-sudo systemctl stop icqd
-sudo systemctl disable icqd
-sudo rm /etc/systemd/system/icqd* -rf
-sudo rm $(which icq) -rf
-sudo rm -rf $HOME/.icq
-sudo rm -rf $HOME/interchain-queries
+wget -c https://go.dev/dl/go1.18.3.linux-amd64.tar.gz && rm -rf /usr/local/go && tar -C /usr/local -xzf go1.18.3.linux-amd64.tar.gz && rm -rf go1.18.3.linux-amd64.tar.gz
 ```
+```
+echo 'export GOROOT=/usr/local/go' >> $HOME/.bash_profile
+echo 'export GOPATH=$HOME/go' >> $HOME/.bash_profile
+echo 'export GO111MODULE=on' >> $HOME/.bash_profile
+echo 'export PATH=$PATH:/usr/local/go/bin:$HOME/go/bin' >> $HOME/.bash_profile && . $HOME/.bash_profile
+```
+
+## Install icq again
+
+
+
+***************************
+
+## Error parsing chain config: default chain (stride-testnet) configuration not found error
+
+Make sure your .icq/config.yaml file is valid.
+The spaces at the beginning of the lines are important. Set it like this.
+
+![image](https://user-images.githubusercontent.com/101174090/185809736-b8b88ea0-7347-457e-96dd-59358da687d1.png)
+
